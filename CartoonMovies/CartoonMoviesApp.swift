@@ -13,7 +13,9 @@ struct CartoonMoviesApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ThemeSwitcher{
+                ContentView()
+            }
         }
     }
 }

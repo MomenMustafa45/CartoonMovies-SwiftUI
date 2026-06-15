@@ -1,8 +1,9 @@
 import SwiftUI
 
 struct SettingsScreen: View {
+    @AppStorage("AppTheme") private var appTheme: AppTheme = .systemDefault
+    
     @StateObject private var themeManager = ThemeManager()
-
     @State private var settingsVM = SettingsViewModel()
 
     var body: some View {
@@ -10,8 +11,16 @@ struct SettingsScreen: View {
             Form {
 
                 Section("Appearance") {
-                    Toggle("Dark Mode", isOn: $settingsVM.isDarkMode)
-                  
+                    Picker("", selection: $appTheme){
+                        ForEach(AppTheme.allCases, id:\.rawValue){ theme in
+                            
+                            Text(theme.rawValue)
+                                .tag(theme)
+                            
+                        }
+                    }
+                    .pickerStyle(.segmented)
+                    
                     Text("Override system appearance to always use light mode")
                         .font(.caption)
                         .foregroundStyle(.gray)
