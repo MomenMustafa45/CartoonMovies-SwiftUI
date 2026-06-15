@@ -8,14 +8,34 @@
 import SwiftUI
 
 struct ContentView: View {
+
+    
+    var moviesListVM = MovieListViewModel()
+    var favoritesVM = FavoritesListVM()
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        TabView{
+            Tab("Movies", systemImage: "movieclapper.fill"){
+                MoviesScreen(movieListVM: moviesListVM, favoritesVM: favoritesVM)
+            }
+            
+            Tab("Favorites", systemImage:  "heart.fill"){
+                FavoritesScreen(moviesListVM: moviesListVM, favoritesVM: favoritesVM)
+            }
+            
+            Tab("Settings", systemImage:  "gear.circle.fill"){
+                SettingsScreen()
+            }
+            
+            Tab(role: .search){
+                SearchScreen(moviesListVM: moviesListVM, favoritesVM: favoritesVM)
+            }
         }
-        .padding()
+        .task {
+            await moviesListVM.fetch()
+            favoritesVM.loadFavorites()
+        }
+        
     }
 }
 
